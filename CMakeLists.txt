@@ -8,14 +8,14 @@ set(CMAKE_C_STANDARD 17)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_C_EXTENSIONS OFF)
 
-add_executable(chapter1-exec main.cpp)
+add_executable(chapter1-exec src/main.cpp)
 target_include_directories(
   chapter1-exec
   PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
   PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/glad/include)
 
 add_library(glad STATIC ${CMAKE_CURRENT_SOURCE_DIR}/glad/src/glad.c)
-target_include_directories(chapter1-exec
+target_include_directories(glad
                            PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/glad/include)
 
 target_link_libraries(chapter1-exec PUBLIC glad glfw)
