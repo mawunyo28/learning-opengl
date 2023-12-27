@@ -27,6 +27,7 @@ const char *fragmentShaderSource = "#version 330 core\n"
 
 int main()
 {
+    #pragma region OPENGL and GLAD INITIALLIZATION
     Timer timer("main");
 
     Timer *init_timer = new Timer("initializations");
@@ -56,6 +57,9 @@ int main()
 
     delete init_timer;
 
+    #pragma endregion
+
+    #pragma region SHADERS
     unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
     unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
 
@@ -79,6 +83,9 @@ int main()
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
 
+    #pragma endregion
+    
+    #pragma region DATA and objects(buffers and arrays)
     float vertices[] = {
         -0.5f, -0.5f, 0.0f,
         0.5f, -0.5f, 0.0f,
@@ -99,7 +106,10 @@ int main()
 
     glBindVertexArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
+    
+    #pragma endregion
 
+    #pragma region PROGRAM LOOP
     while (!glfwWindowShouldClose(window))
     {
         // Timer* timer(new Timer("while loop"));
@@ -116,6 +126,7 @@ int main()
 
         // delete timer;
     }
+    #pragma endregion
 
     glfwTerminate();
 
