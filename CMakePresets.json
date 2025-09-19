@@ -1,0 +1,32 @@
+{
+  "version": 3,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 15
+  },
+  "configurePresets": [
+    {
+      "name": "windows-default",
+      "generator": "Visual Studio 17 2022",
+      "toolchainFile": "C:/Users/Mawunyo/vcpkg/scripts/buildsystems/vcpkg.cmake",
+      "binaryDir": "${sourceDir}/build/"
+    },
+    {
+      "name": "linux-ninja",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/"
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "windows-release",
+      "configurePreset": "windows-default",
+      "configuration": "Release"
+    },
+    {
+      "name": "linux-release",
+      "configurePreset": "linux-ninja",
+      "configuration": "Release"
+    }
+  ]
+}
