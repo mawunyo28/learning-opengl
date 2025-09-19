@@ -3,6 +3,7 @@
 #include "stb_image.h"
 #include <GLFW/glfw3.h>
 #include <glm/ext/matrix_transform.hpp>
+#include <glm/geometric.hpp>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -11,6 +12,10 @@
 const auto WIN_WIDTH = 800;
 const auto WIN_HEIGHT = 600;
 const auto WIN_TITLE = "OpenGL Yey!!";
+
+glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
+glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
+glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
 
 void frame_buffer_size_callback(GLFWwindow *window, int width, int height) {
   glViewport(0, 0, width, height);
@@ -38,10 +43,26 @@ void changeOpacity(GLFWwindow *window, Shader shader) {
 }
 
 void processInput(GLFWwindow *window, Shader *shader) {
+  const float cameraSpeed = 0.05f;
   if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
     glfwSetWindowShouldClose(window, true);
   }
 
+  if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
+    cameraPos += cameraSpeed * cameraFront;
+  }
+
+  if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
+    cameraPos -= cameraSpeed * cameraFront;
+  }
+  if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
+    cameraPos -=
+        cameraSpeed * glm::normalize(glm::cross(cameraFront, cameraUp));
+  }
+  if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
+    cameraPos +=
+        cameraSpeed * glm::normalize(glm::cross(cameraFront, cameraUp));
+  }
   // changeOpacity(window, *shader);
 }
 int main() {
@@ -210,8 +231,7 @@ int main() {
     glBindVertexArray(VAO);
 
     glm::mat4 view = glm::mat4(1.0f);
-    // note that we’re translating the scene in the reverse direction
-    view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+    view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
 
     glm::mat4 projection;
     projection =
